@@ -60,16 +60,11 @@ const usuariosPut = async(req, res= response) => {
 }
 const usuariosDelete = async(req, res= response) => {
     const {id} = req.params;
-    // borrar fisicamente(No recomendable)
-    // const usuario = await Usuario.findByIdAndDelete(id);
 
     //Forma correcta de borrar un usuario
     const usuario = await Usuario.findByIdAndUpdate(id, {estado: false});
-
-
-    res.json({
-        msg: `Usuario borrado ${id}`,
-        usuario});
+   
+    res.json(usuario);
 }
 const usuariosPatch = (req, res= response) => {
     res.json({
