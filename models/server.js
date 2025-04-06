@@ -1,18 +1,30 @@
 const express = require('express')
 const cors = require('cors');
+const { dbConnection } = require('../DB/config');
 
 class Server{
 
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
+
         this.usuariosPath = '/api/usuarios';
+        this.authPath = '/api/auth';
+
+
+        //concetar a BD
+        this.concectarDB();
+
         //midlewares
         this.midlewares();
        
 
         //Rutas de mi aplicacion
         this.routes();
+    }
+    
+    async concectarDB(){
+        await dbConnection();
     }
     midlewares(){
         //Directorio publico
@@ -23,7 +35,9 @@ class Server{
     }
 
     routes(){
+        this.app.use(this.authPath, require('../routes/auth'));
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
+        
     }
     
     listen(){
